@@ -1,0 +1,48 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Project {
+  id              String      @id @default(uuid())
+  name            String
+  cover_image     String?
+  what_is         String
+  how_to_do       String
+  what_to_expect  String
+  status          String      @default("not_started")
+  total_steps     Int         @default(0)
+  completed_steps Int         @default(0)
+  progress        Int         @default(0)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  objectives      Objective[]
+}
+
+model Objective {
+  id              String  @id @default(uuid())
+  project_id      String
+  title           String
+  order           Int     @default(0)
+  total_steps     Int     @default(0)
+  completed_steps Int     @default(0)
+  progress        Int     @default(0)
+  project         Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  steps           Step[]
+}
+
+model Step {
+  id              String    @id @default(uuid())
+  project_id      String
+  objective_id    String
+  title           String
+  order           Int       @default(0)
+  is_completed    Boolean   @default(false)
+  completion_note String?
+  completed_at    DateTime?
+  objective       Objective @relation(fields: [objective_id], references: [id], onDelete: Cascade)
+}

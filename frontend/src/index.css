@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Adicione isso para garantir que o fundo fique preto como no print */
+body {
+  background-color: #0a0a0a;
+  color: white;
+}
